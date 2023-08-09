@@ -50,15 +50,14 @@ function Weather() {
       const position = await getCurrentPositionPromise();
       const lat = position.coords.latitude;
       const lon = position.coords.longitude;
-      const city = await axios.get(
+      const cityApiRes = await axios.get(
         `${cityAPIBase}?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
       );
-      apiURL = `${weatherAPIBase}${city.data.city}&APPID=${apiKey}`;
+      apiURL = `${weatherAPIBase}${cityApiRes.data.city}&APPID=${apiKey}`;
     } else {
       apiURL = `${weatherAPIBase}${cityName}&APPID=${apiKey}`;
     }
 
-    // await sleep(1000 * 30);
     axios
       .get(apiURL)
       .then((res) => {
