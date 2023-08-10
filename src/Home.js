@@ -49,14 +49,14 @@ function Home() {
                                 />
                             </div>
                             <div onClick={moveToWeatherPage} class="col-2 btn btn-primary ">
-                                <FaArrowAltCircleRight fontSize={26} className="text-center" />
+                                <FaArrowAltCircleRight fontSize={26}  className="text-center" />
                             </div>
                         </div>
 
                         <Divider
                             style={{
-                                marginTop: "0px",
-                                marginBottom: "0px",
+                                marginTop: "5px",
+                                marginBottom: "5px",
                                 color: "lightgrey",
                                 borderColor: "lightgrey",
                             }}

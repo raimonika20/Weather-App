@@ -30,6 +30,7 @@ function GetWeatherInfoComponent(data) {
       <div className="weatherInfo">
         <h5 className="weatherTemp">{(data.celcius - 273.15).toFixed(2)}°C</h5>
         <h6 className="weatherCity">{data?.name}</h6>
+        <h10 className="weatherDesc">{data?.desc}</h10>
       </div>
     );
   }
@@ -61,12 +62,25 @@ function Weather() {
     axios
       .get(apiURL)
       .then((res) => {
+        let imagePath = '';
+        if (res.data.weather[0].main == "Clouds") {
+          imagePath = "https://cdn.pixabay.com/photo/2013/04/01/09/22/clouds-98536_960_720.png"
+        } else if (res.data.weather[0].main == "Clear") {
+          imagePath = "https://cdn.icon-icons.com/icons2/2505/PNG/512/sunny_weather_icon_150663.png"
+        } else if (res.data.weather[0].main == "Rain") {
+          imagePath = "https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-1024.png"
+        } else if (res.data.weather[0].main == "Drizzle") {
+          imagePath = "https://cdn2.iconfinder.com/data/icons/weather-blue-filled-color/300/21947858Untitled-3-512.png"
+        } else {
+          imagePath = "https://cdn.icon-icons.com/icons2/2505/PNG/512/sunny_weather_icon_150663.png"
+        }
         setData({
           ...data,
           celcius: res.data.main.temp,
           name: res.data.name,
+          desc: res.data.weather[0].description,
           humidity: res.data.main.humidity,
-          speed: res.data.wind.speed,
+          speed: res.data.wind.speed, image: imagePath
         });
       })
       .catch((err) => {
@@ -92,7 +106,7 @@ function Weather() {
         <div className="col-md-12 text-center mt-3">
           <img
             className="weatherIcon"
-            src="https://cdn.icon-icons.com/icons2/2505/PNG/512/sunny_weather_icon_150663.png"
+            src={data.image}
           />
 
           {GetWeatherInfoComponent(data)}
@@ -101,8 +115,8 @@ function Weather() {
             style={{
               borderColor: "lightgrey",
               margin: 0,
-              marginTop: "10px",
-              marginBottom: "15px",
+              marginTop: "0px",
+              marginBottom: "5px",
             }}
           />
 
@@ -119,7 +133,7 @@ function Weather() {
             </div>
 
             <Divider
-              style={{ borderColor: "lightgrey", margin: 0 }}
+              style={{ borderColor: "lightgrey", margin: 0, height: '40px' }}
               type="vertical"
             />
 
