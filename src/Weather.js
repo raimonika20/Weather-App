@@ -63,13 +63,13 @@ function Weather() {
       .get(apiURL)
       .then((res) => {
         let imagePath = '';
-        if (res.data.weather[0].main == "Clouds") {
+        if (res.data.weather[0].main === "Clouds") {
           imagePath = "https://cdn.pixabay.com/photo/2013/04/01/09/22/clouds-98536_960_720.png"
-        } else if (res.data.weather[0].main == "Clear") {
+        } else if (res.data.weather[0].main === "Clear") {
           imagePath = "https://cdn.icon-icons.com/icons2/2505/PNG/512/sunny_weather_icon_150663.png"
-        } else if (res.data.weather[0].main == "Rain") {
+        } else if (res.data.weather[0].main === "Rain") {
           imagePath = "https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-1024.png"
-        } else if (res.data.weather[0].main == "Drizzle") {
+        } else if (res.data.weather[0].main === "Drizzle") {
           imagePath = "https://cdn2.iconfinder.com/data/icons/weather-blue-filled-color/300/21947858Untitled-3-512.png"
         } else {
           imagePath = "https://cdn.icon-icons.com/icons2/2505/PNG/512/sunny_weather_icon_150663.png"
