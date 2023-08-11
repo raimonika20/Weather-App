@@ -3,6 +3,10 @@ body {
   display: block;
 }
 
+.text-red {
+  color: red;
+}
+
 .weather {
   width: 300px;
   padding: 10px;
@@ -36,11 +40,11 @@ body {
   padding: 0;
   margin: 0;
 }
- 
-.weatherDesc{
-    font-size: 13px ;
-    padding: 0;
-    margin: 0;
+
+.weatherDesc {
+  font-size: 13px;
+  padding: 0;
+  margin: 0;
 }
 
 .weatherTemp {
@@ -113,12 +117,13 @@ body {
   padding: 3px;
 }
 
-.search button:hover , .btn:hover{
-    background-color:rgb(20, 138, 147) ;
+.search button:hover,
+.btn:hover {
+  background-color: rgb(20, 138, 147);
 }
 
 .btn {
-    background-color: rgb(38, 191, 202);
+  background-color: rgb(38, 191, 202);
 }
 
 .error {
