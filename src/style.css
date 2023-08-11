@@ -55,13 +55,12 @@ body {
 .heading {
   justify-content: right;
   padding: 0px;
-
-  color: rgb(38, 191, 202);
+  color: rgb(44, 115, 120);
 }
 
 .headingUpdate {
   margin-right: 15px;
-  color: rgb(38, 191, 202);
+  color: rgb(44, 115, 120);
 }
 
 .search input {

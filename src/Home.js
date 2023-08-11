@@ -6,34 +6,27 @@ import { useNavigate } from "react-router-dom";
 import "antd/dist/reset.css";
 import { Divider } from "antd";
 import "./style.css";
-import { City } from "country-state-city";
 import Select from "react-select";
 import { useSearchParams } from "react-router-dom";
+import { getCityNameOptions } from "./utils/helper";
 
 function Home() {
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    useEffect(() => {
-        const error = searchParams.get("error");
-        setErrorMessage(error);
-    }, [searchParams]);
-
     const navigate = useNavigate();
+    const options = getCityNameOptions();
+
+    const [searchParams, setSearchParams] = useSearchParams();
     const [value, setValue] = useState("");
     const [errorMessage, setErrorMessage] = useState();
-    const states = ["RJ", "MH", "GJ", "MP", "UP"];
-    const cities = states
-        .map((state) => City.getCitiesOfState("IN", state))
-        .flat();
-    const options = cities.map((city) => ({
-        value: city.name,
-        label: city.name,
-    }));
 
     const moveToWeatherPage = () => {
         setErrorMessage(null);
         navigate("/weather/" + value.value);
     };
+
+    useEffect(() => {
+        const error = searchParams.get("error");
+        setErrorMessage(error);
+    }, [searchParams]);
 
     return (
         <div className="jumbotron vertical-center">
@@ -52,6 +45,10 @@ function Home() {
                             <div class="col">
                                 <Select
                                     placeholder="Enter city name"
+                                    aria-label="Enter city name"
+                                    label="Enter city name"
+                                    getOptionLabel={(option) => option.label}
+                                    getOptionValue={(option) => option.value}
                                     autoFocus
                                     options={options}
                                     value={value}
@@ -78,8 +75,8 @@ function Home() {
                             style={{
                                 marginTop: "5px",
                                 marginBottom: "5px",
-                                color: "lightgrey",
-                                borderColor: "lightgrey",
+                                color: "gray",
+                                borderColor: "gray",
                             }}
                         >
                             or

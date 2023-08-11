@@ -8,12 +8,13 @@ import "antd/dist/reset.css";
 import { Divider } from "antd";
 import axios from "axios";
 import "./style.css";
-
-function getCurrentPositionPromise(options) {
-  return new Promise((resolve, reject) =>
-    navigator.geolocation.getCurrentPosition(resolve, reject, options),
-  );
-}
+import {
+  weatherAPIBase,
+  getImagePath,
+  getCurrentPositionPromise,
+  apiKey,
+  cityAPIBase,
+} from "./utils/helper";
 
 function GetWeatherInfoComponent(data) {
   if (!data?.name) {
@@ -28,7 +29,7 @@ function GetWeatherInfoComponent(data) {
   } else {
     return (
       <div className="weatherInfo">
-        <h5 className="weatherTemp">{(data.celcius - 273.15).toFixed(2)}°C</h5>
+        <h5 className="weatherTemp">{data?.celcius}°C</h5>
         <h6 className="weatherCity">{data?.name}</h6>
         <h10 className="weatherDesc">{data?.desc}</h10>
       </div>
@@ -39,10 +40,6 @@ function GetWeatherInfoComponent(data) {
 function Weather() {
   const navigate = useNavigate();
   const { cityName } = useParams();
-  const weatherAPIBase = "https://api.openweathermap.org/data/2.5/weather?q=";
-  const cityAPIBase =
-    "https://api.bigdatacloud.net/data/reverse-geocode-client";
-  const apiKey = "ae6992475e03f32c2e010eaa1f9b4250";
   const [data, setData] = useState({});
 
   const getWeatherDetails = async (cityName) => {
@@ -60,44 +57,23 @@ function Weather() {
       apiURL = `${weatherAPIBase}${cityName}&APPID=${apiKey}`;
     }
 
-    axios
-      .get(apiURL)
-      .then((res) => {
-        let imagePath = "";
-        if (res.data.weather[0].main === "Clouds") {
-          imagePath =
-            "https://cdn.pixabay.com/photo/2013/04/01/09/22/clouds-98536_960_720.png";
-        } else if (res.data.weather[0].main === "Clear") {
-          imagePath =
-            "https://cdn.icon-icons.com/icons2/2505/PNG/512/sunny_weather_icon_150663.png";
-        } else if (res.data.weather[0].main === "Rain") {
-          imagePath =
-            "https://cdn2.iconfinder.com/data/icons/weather-flat-14/64/weather07-1024.png";
-        } else if (res.data.weather[0].main === "Drizzle") {
-          imagePath =
-            "https://cdn2.iconfinder.com/data/icons/weather-blue-filled-color/300/21947858Untitled-3-512.png";
-        } else {
-          imagePath =
-            "https://cdn.icon-icons.com/icons2/2505/PNG/512/sunny_weather_icon_150663.png";
-        }
-        setData({
-          ...data,
-          celcius: res.data.main.temp,
-          name: res.data.name,
-          desc: res.data.weather[0].description,
-          humidity: res.data.main.humidity,
-          speed: res.data.wind.speed,
-          image: imagePath,
-        });
-      })
-      .catch((err) => {
-        if (err.response.status === 404) {
-          navigate("/?error=City not found");
-        } else {
-          navigate("/?error=Something went wrong. " + err.response.statusText);
-        }
-        console.error("err", err);
-      });
+    try {
+      const res = await axios.get(apiURL);
+      const weather = res.data.weather[0].main;
+      const image = getImagePath(weather);
+      const celcius = (res.data.main.temp - 273.15).toFixed(2);
+      const name = res.data.name;
+      const desc = res.data.weather[0].description;
+      const humidity = Math.round(res.data.main.humidity ?? 0);
+      const speed = Math.round(res.data.wind.speed ?? 0);
+      setData({ ...data, celcius, image, name, desc, humidity, speed });
+    } catch (err) {
+      if (err.response.status === 404) {
+        navigate("/?error=City not found");
+      } else {
+        navigate("/?error=Something went wrong. " + err.response.statusText);
+      }
+    }
   };
 
   useEffect(() => {
@@ -116,7 +92,7 @@ function Weather() {
         </h6>
         <Divider style={{ borderColor: "lightgrey", margin: 0 }} />
         <div className="col-md-12 text-center mt-3">
-          <img className="weatherIcon" src={data.image} />
+          <img className="weatherIcon" alt={data.desc} src={data.image} />
 
           {GetWeatherInfoComponent(data)}
 
@@ -133,10 +109,10 @@ function Weather() {
             <div className="col">
               <img
                 src="https://cdn.iconscout.com/icon/premium/png-256-thumb/humidity-1405137-1187424.png"
-                alt=""
+                alt="Humidity icon"
               />
               <div className="humidity">
-                <p>{Math.round(data.humidity)}</p>
+                <p>{data.humidity}</p>
                 <p>Humidity</p>
               </div>
             </div>
@@ -149,10 +125,10 @@ function Weather() {
             <div className="col">
               <img
                 src="https://cdn1.iconfinder.com/data/icons/hawcons/32/700211-icon-43-wind-512.png"
-                alt=""
+                alt="Wind speed icon"
               />
               <div className="wind">
-                <p>{Math.round(data.speed)} Km/h</p>
+                <p>{data.speed} Km/h</p>
                 <p>Wind</p>
               </div>
             </div>
