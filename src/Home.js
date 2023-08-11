@@ -31,7 +31,7 @@ function Home() {
     return (
         <div className="jumbotron vertical-center">
             <div className="weather container">
-                <h6 className="heading">Weather app</h6>
+                <h6 className="heading">Weather App</h6>
                 <Divider
                     style={{
                         borderColor: "lightgrey",
