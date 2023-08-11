@@ -121,7 +121,11 @@ body {
     background-color: rgb(38, 191, 202);
 }
 
-
+.error {
+  color: red;
+  text-align: right;
+  margin-right: 10px;
+}
 
 /* /* .search {
     display: flex;

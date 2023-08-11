@@ -25,7 +25,8 @@ function GetWeatherInfoComponent(data) {
         <h6 className="weatherCity">Loading...</h6>
       </div>
     );
-  } else {
+  }  
+  else {
     return (
       <div className="weatherInfo">
         <h5 className="weatherTemp">{(data.celcius - 273.15).toFixed(2)}°C</h5>
@@ -44,6 +45,7 @@ function Weather() {
     "https://api.bigdatacloud.net/data/reverse-geocode-client";
   const apiKey = "ae6992475e03f32c2e010eaa1f9b4250";
   const [data, setData] = useState({});
+
   const getWeatherDetails = async (cityName) => {
     let apiURL = "";
 
@@ -55,7 +57,9 @@ function Weather() {
         `${cityAPIBase}?latitude=${lat}&longitude=${lon}&localityLanguage=en`,
       );
       apiURL = `${weatherAPIBase}${cityApiRes.data.city}&APPID=${apiKey}`;
-    } else {
+    }
+
+    else {
       apiURL = `${weatherAPIBase}${cityName}&APPID=${apiKey}`;
     }
 
@@ -108,6 +112,7 @@ function Weather() {
             className="weatherIcon"
             src={data.image}
           />
+         
 
           {GetWeatherInfoComponent(data)}
 

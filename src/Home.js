@@ -11,6 +11,7 @@ import Select from "react-select";
 function Home() {
     const navigate = useNavigate();
     const [value, setValue] = useState("");
+    const [error, setError] = useState('');
     const states = ["RJ", "MH", "GJ", "MP", "UP"];
     const cities = states
         .map((state) => City.getCitiesOfState("IN", state))
@@ -19,9 +20,21 @@ function Home() {
         value: city.name,
         label: city.name,
     }));
+
+
     const moveToWeatherPage = () => {
-        navigate("/weather/" + value.value);
+
+        if (Error.response.status == 400) {
+            setError("Invalid City Name")
+        }
+        else {
+            setError('');
+            navigate("/weather/" + value.value);
+        }
     };
+
+
+
 
     return (
         <div className="jumbotron vertical-center">
@@ -47,9 +60,13 @@ function Home() {
                                         setValue(newValue);
                                     }}
                                 />
+
                             </div>
                             <div onClick={moveToWeatherPage} class="col-2 btn btn-primary ">
-                                <FaArrowAltCircleRight fontSize={26}  className="text-center" />
+                                <FaArrowAltCircleRight fontSize={26} className="text-center" />
+                            </div>
+                            <div className="error">
+                                <p>{error}</p>
                             </div>
                         </div>
 
