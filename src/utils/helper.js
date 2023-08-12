@@ -1,6 +1,3 @@
-import { City } from "country-state-city";
-export const STATES = ["RJ", "MH", "GJ", "MP", "UP"];
-
 export const weatherAPIBase =
   "https://api.openweathermap.org/data/2.5/weather?q=";
 export const cityAPIBase =
@@ -27,14 +24,4 @@ export function getImagePath(weather) {
     return weatherTypeImageMap["Clear"];
   }
   return weatherTypeImageMap[weather];
-}
-
-export function getCityNameOptions() {
-  const cities = STATES.map((state) =>
-    City.getCitiesOfState("IN", state),
-  ).flat();
-  return cities.map((city) => ({
-    value: city.name,
-    label: city.name,
-  }));
 }

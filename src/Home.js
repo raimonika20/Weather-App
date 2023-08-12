@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { FaArrowAltCircleRight } from "react-icons/fa";
 import { BiErrorCircle } from "react-icons/bi";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 import "antd/dist/reset.css";
 import { Divider } from "antd";
 import "./style.css";
-import Select from "react-select";
 import { useSearchParams } from "react-router-dom";
-import { getCityNameOptions } from "./utils/helper";
 
 function Home() {
     const navigate = useNavigate();
-    const options = getCityNameOptions();
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [value, setValue] = useState("");
@@ -20,7 +16,7 @@ function Home() {
 
     const moveToWeatherPage = () => {
         setErrorMessage(null);
-        navigate("/weather/" + value.value);
+        navigate("/weather/" + value);
     };
 
     useEffect(() => {
@@ -43,23 +39,19 @@ function Home() {
                     <div className="search container">
                         <div class="row">
                             <div class="col">
-                                <Select
+                                <input
+                                    type="text"
+                                    class="form-control text-center"
                                     placeholder="Enter city name"
                                     aria-label="Enter city name"
                                     label="Enter city name"
-                                    getOptionLabel={(option) => option.label}
-                                    getOptionValue={(option) => option.value}
                                     autoFocus
-                                    options={options}
                                     value={value}
                                     onChange={(newValue) => {
                                         setErrorMessage(null);
-                                        setValue(newValue);
+                                        setValue(newValue.target.value);
                                     }}
                                 />
-                            </div>
-                            <div onClick={moveToWeatherPage} class="col-2 btn btn-primary ">
-                                <FaArrowAltCircleRight fontSize={26} className="text-center" />
                             </div>
                             {errorMessage && (
                                 <div class="row m-1 p-0 ">
